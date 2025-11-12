@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { Header } from './Header';
@@ -10,15 +10,33 @@ export function IncomeSurveyApp() {
   const { isConnected } = useAccount();
   const [activeTab, setActiveTab] = useState<'survey' | 'statistics'>('survey');
   const [forceRefresh, setForceRefresh] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSurveySubmitted = () => {
-    // Trigger StatisticsPanel to refresh its data
-    setForceRefresh(prev => prev + 1);
-  };
+  const handleSurveySubmitted = useCallback(() => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      // Trigger StatisticsPanel to refresh its data
+      setForceRefresh(prev => prev + 1);
+    } catch (err) {
+      setError('Failed to process survey submission. Please try again.');
+      console.error('Survey submission error:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   return (
     <div className="income-survey-app">
       <Header />
+
+      {error && (
+        <div className="error-banner">
+          <p>{error}</p>
+          <button onClick={() => setError(null)}>×</button>
+        </div>
+      )}
 
       <main className="main-content">
         {!isConnected ? (
@@ -50,7 +68,12 @@ export function IncomeSurveyApp() {
               </nav>
             </div>
 
-            {activeTab === 'survey' && <SurveyForm onSurveySubmitted={handleSurveySubmitted} />}
+            {activeTab === 'survey' && (
+              <div className={isLoading ? 'loading-overlay' : ''}>
+                <SurveyForm onSurveySubmitted={handleSurveySubmitted} />
+                {isLoading && <div className="loading-indicator">Processing...</div>}
+              </div>
+            )}
             {activeTab === 'statistics' && <StatisticsPanel forceRefresh={forceRefresh} />}
           </div>
         )}
