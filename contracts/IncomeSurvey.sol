@@ -147,8 +147,6 @@ contract IncomeSurvey is SepoliaConfig {
         FHE.allowThis(increment3);
 
         range_1_count = FHE.add(range_1_count, increment1);
-        range_1_count = FHE.add(range_1_count, increment2);
-        range_1_count = FHE.add(range_1_count, increment3);
         FHE.allowThis(range_1_count);
         range_2_count = FHE.add(range_2_count, increment2);
         FHE.allowThis(range_2_count);
