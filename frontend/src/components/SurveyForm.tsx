@@ -139,7 +139,7 @@ export function SurveyForm({ onSurveySubmitted }: SurveyFormProps) {
   // No need to check individual decryption access
 
   const handleSubmit = async () => {
-    if (!address) return;
+    if (!selectedRange || !address) return;
 
     setIsSubmitting(true);
     setSubmitStatus('idle');
