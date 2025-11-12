@@ -65,6 +65,12 @@ contract IncomeSurvey is SepoliaConfig {
         range_2_count = FHE.asEuint32(0);
         range_3_count = FHE.asEuint32(0);
 
+        // Initialize encrypted constants for comparisons
+        zero = FHE.asEuint32(0);
+        one = FHE.asEuint32(1);
+        two = FHE.asEuint32(2);
+        three = FHE.asEuint32(3);
+
         // Grant contract access for internal operations (moved to after first function call)
         // FHE.allowThis will be called in the first function that uses these variables
     }
