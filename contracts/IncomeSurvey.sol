@@ -21,6 +21,9 @@ contract IncomeSurvey is SepoliaConfig {
     /// @notice Contract owner (deployer)
     address public owner;
 
+    /// @notice Authorized operators who can perform administrative operations
+    mapping(address => bool) public authorizedOperators;
+
     /// @notice Encrypted counters for each income range
     /// @dev Homomorphic addition allows computing statistics without decryption
     euint32 private range_1_count; // <$3k count
@@ -60,6 +63,7 @@ contract IncomeSurvey is SepoliaConfig {
     /// @notice Constructor sets the contract deployer as owner
     constructor() {
         owner = msg.sender;
+        authorizedOperators[msg.sender] = true;
         // Initialize encrypted counters with zero values
         range_1_count = FHE.asEuint32(0);
         range_2_count = FHE.asEuint32(0);
@@ -311,5 +315,26 @@ contract IncomeSurvey is SepoliaConfig {
             response.income_range,
             response.timestamp
         );
+    }
+
+    /// @notice Add an authorized operator (only owner)
+    /// @param operator Address to authorize
+    function addAuthorizedOperator(address operator) external {
+        require(msg.sender == owner, "Only owner can add operators");
+        authorizedOperators[operator] = true;
+    }
+
+    /// @notice Remove an authorized operator (only owner)
+    /// @param operator Address to remove authorization
+    function removeAuthorizedOperator(address operator) external {
+        require(msg.sender == owner, "Only owner can remove operators");
+        authorizedOperators[operator] = false;
+    }
+
+    /// @notice Emergency stop function (only authorized operators)
+    /// @dev Stops all survey submissions in case of emergency
+    function emergencyStop() external {
+        require(authorizedOperators[msg.sender], "Not authorized");
+        // Implementation for emergency stop would go here
     }
 }
