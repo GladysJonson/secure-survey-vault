@@ -88,6 +88,9 @@ contract IncomeSurvey is SepoliaConfig {
         // Prevent multiple submissions
         require(!responses[msg.sender].exists, "User has already submitted a survey");
 
+        // Validate input proof is not empty
+        require(inputProof.length > 0, "Input proof cannot be empty");
+
         // Decrypt and validate the encrypted input
         euint32 encryptedRange = FHE.fromExternal(inputEuint32, inputProof);
 
