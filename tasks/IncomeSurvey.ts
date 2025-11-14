@@ -1,6 +1,9 @@
 import { FhevmType } from "@fhevm/hardhat-plugin";
 
 // Hardhat tasks for income survey contract interaction
+// Provides administrative commands for contract management and testing
+
+// Hardhat tasks for income survey contract interaction
 import { task } from "hardhat/config";
 import type { TaskArguments } from "hardhat/types";
 
