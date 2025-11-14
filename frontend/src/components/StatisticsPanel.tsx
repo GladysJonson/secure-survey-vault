@@ -27,6 +27,7 @@ export function StatisticsPanel({ forceRefresh }: StatisticsPanelProps) {
   const [refreshKey, setRefreshKey] = useState(0);
   const [showDecrypted, setShowDecrypted] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | undefined>(undefined);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Get encrypted statistics from contract
   const { data: statistics } = useReadContract({
@@ -107,7 +108,10 @@ export function StatisticsPanel({ forceRefresh }: StatisticsPanelProps) {
   useEffect(() => {
     if (forceRefresh && forceRefresh > 0) {
       console.log('🔄 Force refresh triggered by survey submission');
+      setRefreshing(true);
       refetchTotalParticipants();
+      // Reset refreshing state after a short delay
+      setTimeout(() => setRefreshing(false), 1000);
     }
   }, [forceRefresh, refetchTotalParticipants]);
   const total = Number(totalParticipants) || 0;
