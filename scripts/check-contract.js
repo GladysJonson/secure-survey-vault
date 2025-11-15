@@ -1,5 +1,6 @@
 const { ethers, deployments } = require('hardhat');
 
+// Enhanced contract verification script
 async function main() {
   console.log('Checking IncomeSurvey contract on Sepolia...');
 
