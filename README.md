@@ -14,6 +14,9 @@ A privacy-preserving income range survey application built with Fully Homomorphi
 - **Anonymous Participation**: Users can view their own encrypted data but not others'
 - **End-to-End Encryption**: Data remains encrypted throughout the entire process
 - **Rainbow Wallet Integration**: Easy wallet connection in the top-right corner
+- **Access Control**: Role-based permissions for administrative operations
+- **Emergency Stop**: Authorized operators can pause operations in emergencies
+- **Input Validation**: Comprehensive validation to prevent malformed submissions
 
 ## Business Logic
 
