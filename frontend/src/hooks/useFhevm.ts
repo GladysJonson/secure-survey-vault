@@ -7,19 +7,25 @@ import { ethers } from 'ethers';
 export const useFhevm = () => {
   const [isSupported, setIsSupported] = useState(false);
   const [instance, setInstance] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const chainId = useChainId();
   const { address } = useAccount();
 
   useEffect(() => {
-    // FHEVM is only supported in localhost Hardhat environment
-    const supported = chainId === 31337;
-    setIsSupported(supported);
+    setIsLoading(true);
+    setError(null);
 
-    if (supported) {
-      // In a real implementation, you would initialize the FHEVM instance here
-      // For now, we'll simulate it
-      console.log('FHEVM supported on localhost');
-      setInstance({
+    try {
+      // FHEVM is only supported in localhost Hardhat environment
+      const supported = chainId === 31337;
+      setIsSupported(supported);
+
+      if (supported) {
+        // In a real implementation, you would initialize the FHEVM instance here
+        // For now, we'll simulate it
+        console.log('FHEVM supported on localhost');
+        setInstance({
         createEncryptedInput: (contractAddress: string, userAddress: string) => ({
           add32: (value: number) => ({
             encrypt: async () => {
@@ -36,11 +42,15 @@ export const useFhevm = () => {
     } else {
       setInstance(null);
     }
+
+    setIsLoading(false);
   }, [chainId]);
 
   return {
     isSupported,
     instance,
+    error,
+    isLoading,
     isReady: isSupported && instance !== null
   };
 };
