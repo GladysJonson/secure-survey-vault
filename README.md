@@ -17,6 +17,10 @@ A privacy-preserving income range survey application built with Fully Homomorphi
 - **Access Control**: Role-based permissions for administrative operations
 - **Emergency Stop**: Authorized operators can pause operations in emergencies
 - **Input Validation**: Comprehensive validation to prevent malformed submissions
+- **Multi-Network Support**: Deployable on Ethereum Sepolia and local networks
+- **Development Tools**: Simplified contracts for localhost testing
+- **Error Handling**: Comprehensive error handling and user feedback
+- **Loading States**: Visual feedback during operations and data refresh
 
 ## Business Logic
 
